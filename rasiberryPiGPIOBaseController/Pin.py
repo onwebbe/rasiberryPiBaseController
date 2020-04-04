@@ -21,9 +21,8 @@ class Pin:
     self.board = board
     if (self.pin > 0):
       GPIO.setup(pinNum, GPIO.IN)
-      GPIO.setup(pinNum, GPIO.OUT, initial=GPIO.LOW)
-
-  
+      # GPIO.setup(pinNum, GPIO.OUT, initial=GPIO.LOW)
+    
   def output_setup(self, hilow):
     if (self.pin > 0):
       GPIO.setup(self.pin, GPIO.OUT)
@@ -61,3 +60,6 @@ class Pin:
 
   def getBOARD(self):
     return self.board
+  
+  def getName(self):
+    return self.name

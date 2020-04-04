@@ -12,7 +12,9 @@ class RasiberryPiGPIO:
     else:
       GPIO.setmode(GPIO.BOARD)
     self.mode = mode
+    self.type = pitype
     self.pins = []
+    self._getPinByPIType()
   
   def getPin(self, number):
     pinID = None
@@ -26,7 +28,8 @@ class RasiberryPiGPIO:
         return pin
     return Pin.Pin(-1, '', -1, -1) # return an un functionable pin object to prevent None exception
 
-  def _getPinByPIType(self, type):
+  def _getPinByPIType(self):
+    type = self.type
     if (type == '3B+'):
       self.pins.append(Pin.Pin(1, '3.3V', -1, 1))
       self.pins.append(Pin.Pin(2, 'SDA.1', 2, 3))
