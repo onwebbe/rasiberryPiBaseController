@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-
+import rasiberryPiGPIOBaseController.RasiberryPiGPIO as RasiberryPiGPIO
 PIN_IN = "IN"
 PIN_OUT = "OUT"
 PIN_LOW = "LOW"
@@ -12,9 +12,13 @@ PIN_MAPPING = {
   PIN_HIGH: GPIO.HIGH
 }
 class Pin:
-  def __init__(self, pinNum, name, bcm, board):
+  def __init__(self, type, pinNum, name, bcm, board):
     self.name = name
-    self.pin = pinNum
+    self.pinNum = pinNum
+    if (type == RasiberryPiGPIO.GPIO_TYPE_BCM):
+      self.pin = bcm
+    else:
+      self.pin = board
     self.frequency = 50 #标定频率为50HZ
     self.dc = 0
     self.bcm = bcm
