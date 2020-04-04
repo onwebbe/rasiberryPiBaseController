@@ -23,39 +23,39 @@ class Pin:
     self.dc = 0
     self.bcm = bcm
     self.board = board
-    if (self.pin > 0):
-      GPIO.setup(pinNum, GPIO.IN)
+    if (self.pinNum > 0):
+      GPIO.setup(self.pin, GPIO.IN)
       # GPIO.setup(pinNum, GPIO.OUT, initial=GPIO.LOW)
     
   def output_setup(self, hilow):
-    if (self.pin > 0):
+    if (self.pinNum > 0):
       GPIO.setup(self.pin, GPIO.OUT)
       GPIO.output(self.pin, PIN_MAPPING[hilow])
   
   def read(self):
-    if (self.pin > 0):
+    if (self.pinNum > 0):
       return GPIO.input(self.pin)
     else:
       return -1
 
   def PWM_setup(self, frequency):
     self.frequency = frequency
-    if (self.pin > 0):
+    if (self.pinNum > 0):
       self.pwm = GPIO.PWM(self.pin, frequency)
       self.pwm.start(0)
   
   def PWM_ChangeFrequency(self, frequency):
     self.frequency = frequency
-    if (self.pin > 0):
+    if (self.pinNum > 0):
       self.pwm.ChangeFrequency(frequency)
   
   def PWM_ChangeDutyCycle(self, dc):
     self.dc = dc
-    if (self.pin > 0):
+    if (self.pinNum > 0):
       self.pwm.ChangeDutyCycle(dc)
   
   def PWM_stop(self):
-    if (self.pin > 0):
+    if (self.pinNum > 0):
       if (self.pwm is not None):
         self.pwm.stop()
   
