@@ -23,8 +23,8 @@ class Pin:
     self.dc = 0
     self.bcm = bcm
     self.board = board
-    if (self.pinNum > 0):
-      GPIO.setup(self.pin, GPIO.IN)
+    #if (self.pinNum > 0):
+      # GPIO.setup(self.pin, GPIO.IN)
       # GPIO.setup(pinNum, GPIO.OUT, initial=GPIO.LOW)
     
   def output_setup(self, hilow):
