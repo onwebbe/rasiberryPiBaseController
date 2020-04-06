@@ -26,7 +26,7 @@ class RasiberryPiGPIO:
       
       if (pinID == number):
         return pin
-    return Pin.Pin(-1, '', -1, -1) # return an un functionable pin object to prevent None exception
+    return Pin.Pin(-1, self.mode, '', -1, -1) # return an un functionable pin object to prevent None exception
 
   def _getPinByPIType(self):
     type = self.type
