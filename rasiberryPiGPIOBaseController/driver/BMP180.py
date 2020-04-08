@@ -189,9 +189,9 @@ class BMP180(object):
 
     UP = self.read_raw_pressure()
 
-    X1 = ((UT - self.cal_AC6) * self.cal_AC5) >> 15
+    X1 = (int(UT - self.cal_AC6) * self.cal_AC5) >> 15
 
-    X2 = (self.cal_MC << 11) / (X1 + self.cal_MD)
+    X2 = (int(self.cal_MC) << 11) / (X1 + self.cal_MD)
 
     B5 = X1 + X2
 
@@ -199,23 +199,23 @@ class BMP180(object):
 
     B6 = B5 - 4000
 
-    X1 = (self.cal_B2 * (B6 * B6) >> 12) >> 11
+    X1 = (int(self.cal_B2) * int(B6 * B6) >> 12) >> 11
 
-    X2 = (self.cal_AC2 * B6) >> 11
+    X2 = int(self.cal_AC2 * B6) >> 11
 
     X3 = X1 + X2
 
-    B3 = (((self.cal_AC1 * 4 + X3) << self._mode) + 2) / 4
+    B3 = ((int(self.cal_AC1 * 4 + X3) << self._mode) + 2) / 4
 
-    X1 = (self.cal_AC3 * B6) >> 13
+    X1 = int(self.cal_AC3 * B6) >> 13
 
-    X2 = (self.cal_B1 * ((B6 * B6) >> 12)) >> 16
+    X2 = (self.cal_B1 * (int(B6 * B6) >> 12)) >> 16
 
-    X3 = ((X1 + X2) + 2) >> 2
+    X3 = int((X1 + X2) + 2) >> 2
 
-    B4 = (self.cal_AC4 * (X3 + 32768)) >> 15
+    B4 = int(self.cal_AC4 * (X3 + 32768)) >> 15
 
-    B7 = (UP - B3) * (50000 >> self._mode)
+    B7 = (UP - B3) * (50000 >> int(self._mode))
 
     if B7 < 0x80000000:
 
@@ -225,13 +225,13 @@ class BMP180(object):
 
       p = (B7 / B4) * 2
 
-      X1 = (p >> 8) * (p >> 8)
+      X1 = (int(p) >> 8) * (int(p) >> 8)
 
-      X1 = (X1 * 3038) >> 16
+      X1 = int(X1 * 3038) >> 16
 
-      X2 = (-7357 * p) >> 16
+      X2 = int(-7357 * p) >> 16
 
-      p = p + ((X1 + X2 + 3791) >> 4)
+      p = p + (int(X1 + X2 + 3791) >> 4)
 
     return p
 
