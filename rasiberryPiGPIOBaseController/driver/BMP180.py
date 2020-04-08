@@ -177,7 +177,7 @@ class BMP180(object):
 
     B5 = X1 + X2
 
-    temp = ((B5 + 8) >> 4) / 10.0
+    temp = ((B5 + 8 + 0.0) >> (4 + 0.0)) / 10.0
 
     return temp
 
