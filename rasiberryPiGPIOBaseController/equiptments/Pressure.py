@@ -8,7 +8,7 @@ import rasiberryPiGPIOBaseController.equiptments.driver.BMP180 as BMP180
 
 # bmp = BMP085(0x77, debug=True)
 
-bmp = BMP180()
+bmp = BMP180.BMP180()
 
 # To specify a different operating mode, uncomment one of the following:
 
