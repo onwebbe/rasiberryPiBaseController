@@ -57,205 +57,204 @@ BMP180_READPRESSURECMD = 0x34
 class BMP180(object):
 
   def __init__(self, address=BMP180_I2CADDR, mode=BMP180_STANDARD):
+    self._mode = mode
 
-  self._mode = mode
+    self._address = address
 
-  self._address = address
+    self._bus = smbus.SMBus(1)
 
-  self._bus = smbus.SMBus(1)
+    # Load calibration values.
 
-  # Load calibration values.
-
-  self._load_calibration()
+    self._load_calibration()
 
   def _read_byte(self,cmd):
 
-  return self._bus.read_byte_data(self._address,cmd)
+    return self._bus.read_byte_data(self._address,cmd)
 
   def _read_u16(self,cmd):
 
-  MSB = self._bus.read_byte_data(self._address,cmd)
+    MSB = self._bus.read_byte_data(self._address,cmd)
 
-  LSB = self._bus.read_byte_data(self._address,cmd+1)
+    LSB = self._bus.read_byte_data(self._address,cmd+1)
 
-  return (MSB << 8) + LSB
+    return (MSB << 8) + LSB
 
   def _read_s16(self,cmd):
 
-  result = self._read_u16(cmd)
+    result = self._read_u16(cmd)
 
-  if result > 32767:result -= 65536
+    if result > 32767:result -= 65536
 
-  return result
+    return result
 
   def _write_byte(self,cmd,val):
 
-  self._bus.write_byte_data(self._address,cmd,val)
+    self._bus.write_byte_data(self._address,cmd,val)
 
   def _load_calibration(self):
 
-  "load calibration"
+    "load calibration"
 
-  self.cal_AC1 = self._read_s16(BMP180_CAL_AC1) # INT16
+    self.cal_AC1 = self._read_s16(BMP180_CAL_AC1) # INT16
 
-  self.cal_AC2 = self._read_s16(BMP180_CAL_AC2) # INT16
+    self.cal_AC2 = self._read_s16(BMP180_CAL_AC2) # INT16
 
-  self.cal_AC3 = self._read_s16(BMP180_CAL_AC3) # INT16
+    self.cal_AC3 = self._read_s16(BMP180_CAL_AC3) # INT16
 
-  self.cal_AC4 = self._read_u16(BMP180_CAL_AC4) # UINT16
+    self.cal_AC4 = self._read_u16(BMP180_CAL_AC4) # UINT16
 
-  self.cal_AC5 = self._read_u16(BMP180_CAL_AC5) # UINT16
+    self.cal_AC5 = self._read_u16(BMP180_CAL_AC5) # UINT16
 
-  self.cal_AC6 = self._read_u16(BMP180_CAL_AC6) # UINT16
+    self.cal_AC6 = self._read_u16(BMP180_CAL_AC6) # UINT16
 
-  self.cal_B1 = self._read_s16(BMP180_CAL_B1)  # INT16
+    self.cal_B1 = self._read_s16(BMP180_CAL_B1)  # INT16
 
-  self.cal_B2 = self._read_s16(BMP180_CAL_B2)  # INT16
+    self.cal_B2 = self._read_s16(BMP180_CAL_B2)  # INT16
 
-  self.cal_MB = self._read_s16(BMP180_CAL_MB)  # INT16
+    self.cal_MB = self._read_s16(BMP180_CAL_MB)  # INT16
 
-  self.cal_MC = self._read_s16(BMP180_CAL_MC)  # INT16
+    self.cal_MC = self._read_s16(BMP180_CAL_MC)  # INT16
 
-  self.cal_MD = self._read_s16(BMP180_CAL_MD)  # INT16
+    self.cal_MD = self._read_s16(BMP180_CAL_MD)  # INT16
 
   def read_raw_temp(self):
 
-  """Reads the raw (uncompensated) temperature from the sensor."""
+    """Reads the raw (uncompensated) temperature from the sensor."""
 
-  self._write_byte(BMP180_CONTROL, BMP180_READTEMPCMD)
+    self._write_byte(BMP180_CONTROL, BMP180_READTEMPCMD)
 
-  time.sleep(0.005) # Wait 5ms
+    time.sleep(0.005) # Wait 5ms
 
-  MSB = self._read_byte(BMP180_TEMPDATA)
+    MSB = self._read_byte(BMP180_TEMPDATA)
 
-  LSB = self._read_byte(BMP180_TEMPDATA+1)
+    LSB = self._read_byte(BMP180_TEMPDATA+1)
 
-  raw = (MSB << 8) + LSB
+    raw = (MSB << 8) + LSB
 
-  return raw
+    return raw
 
   def read_raw_pressure(self):
 
-  """Reads the raw (uncompensated) pressure level from the sensor."""
+    """Reads the raw (uncompensated) pressure level from the sensor."""
 
-  self._write_byte(BMP180_CONTROL, BMP180_READPRESSURECMD + (self._mode << 6))
+    self._write_byte(BMP180_CONTROL, BMP180_READPRESSURECMD + (self._mode << 6))
 
-  if self._mode == BMP180_ULTRALOWPOWER:
+    if self._mode == BMP180_ULTRALOWPOWER:
 
-  time.sleep(0.005)
+      time.sleep(0.005)
 
-  elif self._mode == BMP180_HIGHRES:
+    elif self._mode == BMP180_HIGHRES:
 
-  time.sleep(0.014)
+      time.sleep(0.014)
 
-  elif self._mode == BMP180_ULTRAHIGHRES:
+    elif self._mode == BMP180_ULTRAHIGHRES:
 
-  time.sleep(0.026)
+      time.sleep(0.026)
 
-  else:
+    else:
 
-  time.sleep(0.008)
+      time.sleep(0.008)
 
-  MSB = self._read_byte(BMP180_PRESSUREDATA)
+      MSB = self._read_byte(BMP180_PRESSUREDATA)
 
-  LSB = self._read_byte(BMP180_PRESSUREDATA+1)
+      LSB = self._read_byte(BMP180_PRESSUREDATA+1)
 
-  XLSB = self._read_byte(BMP180_PRESSUREDATA+2)
+      XLSB = self._read_byte(BMP180_PRESSUREDATA+2)
 
-  raw = ((MSB << 16) + (LSB << 8) + XLSB) >> (8 - self._mode)
+      raw = ((MSB << 16) + (LSB << 8) + XLSB) >> (8 - self._mode)
 
-  return raw
+    return raw
 
   def read_temperature(self):
 
-  """Gets the compensated temperature in degrees celsius."""
+    """Gets the compensated temperature in degrees celsius."""
 
-  UT = self.read_raw_temp()
+    UT = self.read_raw_temp()
 
-  X1 = ((UT - self.cal_AC6) * self.cal_AC5) >> 15
+    X1 = ((UT - self.cal_AC6) * self.cal_AC5) >> 15
 
-  X2 = (self.cal_MC << 11) / (X1 + self.cal_MD)
+    X2 = (self.cal_MC << 11) / (X1 + self.cal_MD)
 
-  B5 = X1 + X2
+    B5 = X1 + X2
 
-  temp = ((B5 + 8) >> 4) / 10.0
+    temp = ((B5 + 8) >> 4) / 10.0
 
-  return temp
+    return temp
 
   def read_pressure(self):
 
-  """Gets the compensated pressure in Pascals."""
+    """Gets the compensated pressure in Pascals."""
 
-  UT = self.read_raw_temp()
+    UT = self.read_raw_temp()
 
-  UP = self.read_raw_pressure()
+    UP = self.read_raw_pressure()
 
-  X1 = ((UT - self.cal_AC6) * self.cal_AC5) >> 15
+    X1 = ((UT - self.cal_AC6) * self.cal_AC5) >> 15
 
-  X2 = (self.cal_MC << 11) / (X1 + self.cal_MD)
+    X2 = (self.cal_MC << 11) / (X1 + self.cal_MD)
 
-  B5 = X1 + X2
+    B5 = X1 + X2
 
-  # Pressure Calculations
+    # Pressure Calculations
 
-  B6 = B5 - 4000
+    B6 = B5 - 4000
 
-  X1 = (self.cal_B2 * (B6 * B6) >> 12) >> 11
+    X1 = (self.cal_B2 * (B6 * B6) >> 12) >> 11
 
-  X2 = (self.cal_AC2 * B6) >> 11
+    X2 = (self.cal_AC2 * B6) >> 11
 
-  X3 = X1 + X2
+    X3 = X1 + X2
 
-  B3 = (((self.cal_AC1 * 4 + X3) << self._mode) + 2) / 4
+    B3 = (((self.cal_AC1 * 4 + X3) << self._mode) + 2) / 4
 
-  X1 = (self.cal_AC3 * B6) >> 13
+    X1 = (self.cal_AC3 * B6) >> 13
 
-  X2 = (self.cal_B1 * ((B6 * B6) >> 12)) >> 16
+    X2 = (self.cal_B1 * ((B6 * B6) >> 12)) >> 16
 
-  X3 = ((X1 + X2) + 2) >> 2
+    X3 = ((X1 + X2) + 2) >> 2
 
-  B4 = (self.cal_AC4 * (X3 + 32768)) >> 15
+    B4 = (self.cal_AC4 * (X3 + 32768)) >> 15
 
-  B7 = (UP - B3) * (50000 >> self._mode)
+    B7 = (UP - B3) * (50000 >> self._mode)
 
-  if B7 < 0x80000000:
+    if B7 < 0x80000000:
 
-  p = (B7 * 2) / B4
+      p = (B7 * 2) / B4
 
-  else:
+    else:
 
-  p = (B7 / B4) * 2
+      p = (B7 / B4) * 2
 
-  X1 = (p >> 8) * (p >> 8)
+      X1 = (p >> 8) * (p >> 8)
 
-  X1 = (X1 * 3038) >> 16
+      X1 = (X1 * 3038) >> 16
 
-  X2 = (-7357 * p) >> 16
+      X2 = (-7357 * p) >> 16
 
-  p = p + ((X1 + X2 + 3791) >> 4)
+      p = p + ((X1 + X2 + 3791) >> 4)
 
-  return p
+    return p
 
   def read_altitude(self, sealevel_pa=101325.0):
 
-  """Calculates the altitude in meters."""
+    """Calculates the altitude in meters."""
 
-  # Calculation taken straight from section 3.6 of the datasheet.
+    # Calculation taken straight from section 3.6 of the datasheet.
 
-  pressure = float(self.read_pressure())
+    pressure = float(self.read_pressure())
 
-  altitude = 44330.0 * (1.0 - pow(pressure / sealevel_pa, (1.0/5.255)))
+    altitude = 44330.0 * (1.0 - pow(pressure / sealevel_pa, (1.0/5.255)))
 
-  return altitude
+    return altitude
 
   def read_sealevel_pressure(self, altitude_m=0.0):
 
-  """Calculates the pressure at sealevel when given a known altitude in
+    """Calculates the pressure at sealevel when given a known altitude in
 
-  meters. Returns a value in Pascals."""
+    meters. Returns a value in Pascals."""
 
-  pressure = float(self.read_pressure())
+    pressure = float(self.read_pressure())
 
-  p0 = pressure / pow(1.0 - altitude_m/44330.0, 5.255)
+    p0 = pressure / pow(1.0 - altitude_m/44330.0, 5.255)
 
-  return p0
+    return p0
