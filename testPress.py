@@ -21,5 +21,6 @@ while True:
   # altitude = bmp.readAltitude(102350)
   print ("Temperature: %.2f C" % temp)
   print ("Pressure: %.2f hPa" % (pressure / 100.0))
+  print ("Altitude: %.2f" % altitude)
   #print "Altitude:  %.2f\n" % altitude
   time.sleep(1)
