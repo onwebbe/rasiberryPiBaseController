@@ -2,7 +2,7 @@
 
 import time
 
-import rasiberryPiGPIOBaseController.equiptments.driver.BMP180 as BMP180
+import rasiberryPiGPIOBaseController.driver.BMP180 as BMP180
 
 # Initialise the BMP085 and use STANDARD mode (default value)
 
