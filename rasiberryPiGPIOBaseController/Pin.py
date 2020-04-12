@@ -39,7 +39,7 @@ class Pin:
     else:
       return -1
 
-  def PWM_setup(self, frequency):
+  def PWM_setup(self, frequency = 50):
     self.frequency = frequency
     if (self.pinNum > 0):
       GPIO.setup(self.pin, GPIO.OUT) # PWM supporting output only
@@ -63,7 +63,7 @@ class Pin:
   
   def getPin(self):
     return self.pin
-    
+
   def getBCM(self):
     return self.bcm
 
