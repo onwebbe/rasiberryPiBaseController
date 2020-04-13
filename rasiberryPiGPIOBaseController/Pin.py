@@ -14,15 +14,15 @@ PIN_MAPPING = {
 class Pin:
   def __init__(self, pinNum, type, name, bcm, board):
     self.name = name
-    self.pinNum = pinNum
+    self.pinNum = int(pinNum)
     if (type == RasiberryPiGPIO.GPIO_TYPE_BCM):
       self.pin = bcm
     else:
       self.pin = board
     self.frequency = 50 #标定频率为50HZ
     self.dc = 0
-    self.bcm = bcm
-    self.board = board
+    self.bcm = int(bcm)
+    self.board = int(board)
     #if (self.pinNum > 0):
       # GPIO.setup(self.pin, GPIO.IN)
       # GPIO.setup(pinNum, GPIO.OUT, initial=GPIO.LOW)
