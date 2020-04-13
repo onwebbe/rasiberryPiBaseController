@@ -16,6 +16,12 @@ class RasiberryPiGPIO:
     self.type = pitype
     self.pins = []
     self._getPinByPITypeAuto()
+  
+  def getPinByBoardId(self, boardId):
+    for pin in self.pins:
+      if (pin.getBOARD() == boardId):
+        return pin
+    return None
 
   def getMode(self):
     return self.mode
