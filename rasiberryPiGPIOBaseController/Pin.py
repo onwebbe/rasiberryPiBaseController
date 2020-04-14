@@ -12,7 +12,7 @@ PIN_MAPPING = {
   PIN_HIGH: GPIO.HIGH
 }
 class Pin:
-  def __init__(self, pinNum, type, name, bcm, board):
+  def __init__(self, pinNum, type, name, bcm, board, initValue):
     self.name = name
     self.pinNum = int(pinNum)
     if (type == RasiberryPiGPIO.GPIO_TYPE_BCM):
@@ -23,6 +23,7 @@ class Pin:
     self.dc = 0
     self.bcm = int(bcm)
     self.board = int(board)
+    self.initValue = initValue
     #if (self.pinNum > 0):
       # GPIO.setup(self.pin, GPIO.IN)
       # GPIO.setup(pinNum, GPIO.OUT, initial=GPIO.LOW)
@@ -72,3 +73,6 @@ class Pin:
   
   def getName(self):
     return self.name
+  
+  def getInitValue(self):
+    return self.initValue
