@@ -5,5 +5,5 @@ setup(name='rasiberryPiGPIOBaseController',
       url='https://github.com/onwebbe/rasiberryPiGPIOBaseController',
       author='onwebbe',
       license='MIT',
-      packages=['rasiberryPiGPIOBaseController'],
+      packages=['rasiberryPiGPIOBaseController', 'rasiberryPiGPIOBaseController.equiptments', 'rasiberryPiGPIOBaseController.driver'],
       zip_safe=False)
