@@ -16,9 +16,9 @@ class Pin:
     self.name = name
     self.pinNum = int(pinNum)
     if (type == RasiberryPiGPIO.GPIO_TYPE_BCM):
-      self.pin = bcm
+      self.pin = int(bcm)
     else:
-      self.pin = board
+      self.pin = int(board)
     self.frequency = 50 #标定频率为50HZ
     self.dc = 0
     self.bcm = int(bcm)
