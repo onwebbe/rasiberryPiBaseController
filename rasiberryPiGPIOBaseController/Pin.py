@@ -33,15 +33,19 @@ class Pin:
     if (self.pinNum > 0):
       GPIO.setup(self.pin, GPIO.OUT)
       GPIO.output(self.pin, PIN_MAPPING[hilow])
+      self.value = hilow
+      self.mode = PIN_OUT
   
   def read(self):
     if (self.pinNum > 0):
       GPIO.setup(self.pin, GPIO.IN)
+      self.mode = PIN_IN
       return GPIO.input(self.pin)
     else:
       return -1
 
   def PWM_setup(self, frequency = 50):
+    self.mode = ''
     self.frequency = frequency
     if (self.pinNum > 0):
       GPIO.setup(self.pin, GPIO.OUT) # PWM supporting output only
