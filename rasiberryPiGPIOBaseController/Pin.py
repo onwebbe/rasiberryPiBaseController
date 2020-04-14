@@ -81,3 +81,6 @@ class Pin:
   
   def getMode(self):
     return self.mode
+
+  def getValue(self):
+    return self.value
