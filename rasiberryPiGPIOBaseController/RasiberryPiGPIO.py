@@ -70,7 +70,7 @@ class RasiberryPiGPIO:
 
   def _getPinByPITypeAuto(self):
     gpioStatusString = None
-    if (GPIO.MOCK is not None and GPIO.MOCK == True):
+    if (hasattr(GPIO, 'MOCK') and GPIO.MOCK == True):
       gpioStatusString = sampleGPIOStr
     else:
       output = os.popen('gpio readall')
