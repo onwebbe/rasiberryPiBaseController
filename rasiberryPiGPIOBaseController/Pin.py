@@ -31,11 +31,11 @@ class Pin:
     
   def output_setup(self, hilow):
     if (self.pinNum > 0):
-      print (self.pin)
-      print ('BOARD:%d', self.board)
-      print ('BCM:%d', self.bcm)
-      print (self.mode)
-      print (hilow)
+      # print (self.pin)
+      # print ('BOARD:%d'%(self.board))
+      # print ('BCM:%d'%(self.bcm))
+      # print (self.mode)
+      # print (hilow)
       GPIO.setup(self.pin, GPIO.OUT)
       GPIO.output(self.pin, PIN_MAPPING[hilow])
       self.value = PIN_MAPPING[hilow]

@@ -7,6 +7,7 @@ class LED:
     self.pinObj = pinObj
 
   def light(self):
+    print('LED:', Pin.PIN_HIGH)
     self.pinObj.output_setup(Pin.PIN_HIGH)
 
   def shutdown(self):
