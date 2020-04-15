@@ -33,7 +33,7 @@ class Pin:
     if (self.pinNum > 0):
       GPIO.setup(self.pin, GPIO.OUT)
       GPIO.output(self.pin, PIN_MAPPING[hilow])
-      self.value = hilow
+      self.value = PIN_MAPPING[hilow]
       self.mode = PIN_OUT
   
   def read(self):
