@@ -94,8 +94,7 @@ class HSensorRotation:
   def _addCount(self, channel):
     if (not self._stopCount):
       self._counter = self._counter + 1
-      print(self._counter)
-
+      
   def _startCount(self):
     self._stopIndicator = False
     self._stopCount = False
