@@ -1,5 +1,6 @@
 import rasiberryPiGPIOBaseController.Pin as Pin
 import time
+import _thread
 
 class LED:
   def __init__(self, pinObj):
@@ -74,3 +75,47 @@ class FullColorLED:
     self.pinR.PWM_stop()
     self.pinG.PWM_stop()
     self.pinB.PWM_stop()
+
+class HSensorRotation:
+  def __init__(self, pinObj):
+    self._pinObj = pinObj
+    self._name = "HSensor"
+    self._counter = 0
+    self._countResult = []
+    self._stopIndicator = True
+  
+  def getStatus(self):
+    return self._pinObj.read(Pin.PIN_PULL_UP)
+  
+  def addChangeListener(self, command):
+    self._pinObj.addChangeListener(Pin.PIN_PULL_RAISING, command)
+  
+  def _addCount(self, channel):
+    self._counter = self._counter + 1
+    print(self._counter)
+
+  def _startCount(self):
+    self._stopIndicator = False
+    while(True):
+      if (not self._stopIndicator):
+        self._counter = 0
+        time.sleep(60)
+        self._countResult.append(self._counter)
+        if (len(self._countResult) > 120):
+          self._countResult.remove(0)
+
+  def startCount(self):
+    self.addChangeListener(self._addCount)
+    _thread.start_new_thread(self._startCount, ())
+
+  def stopCount(self):
+    self._stopIndicator = True
+  
+  def getLastCountResult(self):
+    return self._countResult[len(self._countResult)]
+  
+  def getAllCountResult(self):
+    return self._countResult
+  
+  def clearCountResult(self):
+    self._countResult = []

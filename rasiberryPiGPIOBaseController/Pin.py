@@ -4,12 +4,24 @@ PIN_IN = "IN"
 PIN_OUT = "OUT"
 PIN_LOW = "LOW"
 PIN_HIGH = "HIGH"
-
+PIN_PULL_UP = "PULL_UP"
+PIN_PULL_DOWN = "PULL_DOWN"
+PIN_PULL_RAISING = "PULL_RAISING"
+PIN_PULL_FALLING = "PULL_FULLING"
+PIN_PULL_BOTH = "PULL_BOTH"
 PIN_MAPPING = {
   PIN_IN: GPIO.IN,
   PIN_OUT: GPIO.OUT,
   PIN_LOW: GPIO.LOW,
   PIN_HIGH: GPIO.HIGH
+}
+
+PIN_PULL = {
+  PIN_PULL_UP: GPIO.PUD_UP,
+  PIN_PULL_DOWN: GPIO.PUD_DOWN,
+  PIN_PULL_RAISING: GPIO.RISING,
+  PIN_PULL_FALLING: GPIO.FALLING,
+  PIN_PULL_BOTH: GPIO.BOTH,
 }
 class Pin:
   def __init__(self, pinNum, type, name, bcm, board, in_out, value):
@@ -41,9 +53,12 @@ class Pin:
       self.value = PIN_MAPPING[hilow]
       self.mode = PIN_OUT
   
-  def read(self):
+  def read(self, updown):
     if (self.pinNum > 0):
-      GPIO.setup(self.pin, GPIO.IN)
+      if (updown is not None):
+        GPIO.setup(self.pin, GPIO.IN, PIN_PULL[updown])
+      else:
+        GPIO.setup(self.pin, GPIO.IN)
       self.mode = PIN_IN
       return GPIO.input(self.pin)
     else:
@@ -89,3 +104,6 @@ class Pin:
 
   def getValue(self):
     return self.value
+  
+  def addChangeListener(self, updown, command):
+    GPIO.add_event_detect(self.pinNum, PIN_PULL[updown], command)
