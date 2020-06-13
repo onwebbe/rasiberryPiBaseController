@@ -83,6 +83,7 @@ class HSensorRotation:
     self._counter = 0
     self._countResult = []
     self._stopIndicator = True
+    self._stopCount = True
   
   def getStatus(self):
     return self._pinObj.read(Pin.PIN_PULL_UP)
@@ -91,18 +92,21 @@ class HSensorRotation:
     self._pinObj.addChangeListener(Pin.PIN_PULL_RAISING, command)
   
   def _addCount(self, channel):
-    self._counter = self._counter + 1
-    print(self._counter)
+    if (not self._stopCount):
+      self._counter = self._counter + 1
+      print(self._counter)
 
   def _startCount(self):
     self._stopIndicator = False
-    while(True):
-      if (not self._stopIndicator):
-        self._counter = 0
-        time.sleep(60)
-        self._countResult.append(self._counter)
-        if (len(self._countResult) > 120):
-          self._countResult.remove(0)
+    self._stopCount = False
+    while(not self._stopIndicator):
+      self._counter = 0
+      time.sleep(60)
+      self._countResult.append(self._counter)
+      if (len(self._countResult) > 120):
+        self._countResult.remove(0)
+    self._stopIndicator = True
+    self._stopCount = True
 
   def startCount(self):
     self.addChangeListener(self._addCount)
