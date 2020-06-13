@@ -116,7 +116,7 @@ class HSensorRotation:
   
   def getLastCountResult(self):
     if (len(self._countResult) == 0):
-      return 0
+      return -1
     return self._countResult[len(self._countResult) - 1]
   
   def getAllCountResult(self):
