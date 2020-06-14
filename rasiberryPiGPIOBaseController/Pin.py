@@ -106,5 +106,5 @@ class Pin:
     return self.value
   
   def addChangeListener(self, updown, command):
-    GPIO.setup(self.pinNum, GPIO.IN)
-    GPIO.add_event_detect(self.pinNum, PIN_PULL[updown], command)
+    GPIO.setup(self.pin, GPIO.IN)
+    GPIO.add_event_detect(self.pin, PIN_PULL[updown], command)
