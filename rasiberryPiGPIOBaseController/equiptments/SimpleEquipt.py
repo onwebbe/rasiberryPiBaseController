@@ -115,11 +115,15 @@ class HSensorRotation:
     self._stopIndicator = True
   
   def getLastCountResult(self):
+    if (self._stopIndicator == True):
+      self.startCount()
     if (len(self._countResult) == 0):
       return -1
     return self._countResult[len(self._countResult) - 1]
   
   def getAllCountResult(self):
+    if (self._stopIndicator == True):
+      self.startCount()
     return self._countResult
   
   def clearCountResult(self):
