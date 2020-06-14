@@ -53,7 +53,7 @@ class Pin:
       self.value = PIN_MAPPING[hilow]
       self.mode = PIN_OUT
   
-  def read(self, updown):
+  def read(self, updown = None):
     if (self.pinNum > 0):
       if (updown is not None):
         GPIO.setup(self.pin, GPIO.IN, PIN_PULL[updown])
