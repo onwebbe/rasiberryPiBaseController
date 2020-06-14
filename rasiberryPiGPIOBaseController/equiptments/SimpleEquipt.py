@@ -86,13 +86,15 @@ class HSensorRotation:
     self._stopIndicator = True
     self._stopCount = True
   
-  def getInstance(self, pinObj):
+  @classmethod
+  def getInstance(cls, pinObj):
     global _HSensorRotationObject
     if (_HSensorRotationObject is None):
        _HSensorRotationObject = HSensorRotation(pinObj)
     return _HSensorRotationObject
   
-  def getNewInstance(self, pinObj):
+  @classmethod
+  def getNewInstance(cls, pinObj):
     global _HSensorRotationObject
     _HSensorRotationObject = HSensorRotation(pinObj)
     return _HSensorRotationObject
