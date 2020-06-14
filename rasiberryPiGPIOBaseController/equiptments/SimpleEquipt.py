@@ -76,6 +76,7 @@ class FullColorLED:
     self.pinG.PWM_stop()
     self.pinB.PWM_stop()
 
+global._HSensorRotationObject = None
 class HSensorRotation:
   def __init__(self, pinObj):
     self._pinObj = pinObj
@@ -84,6 +85,15 @@ class HSensorRotation:
     self._countResult = []
     self._stopIndicator = True
     self._stopCount = True
+  
+  def getInstance(self, pinObj):
+    if (_HSensorRotationObject is None):
+      global._HSensorRotationObject = HSensorRotation(pinObj)
+    return global._HSensorRotationObject
+  
+  def getNewInstance(self, pinObj):
+    global._HSensorRotationObject = HSensorRotation(pinObj)
+    return global._HSensorRotationObject
   
   def getStatus(self):
     return self._pinObj.read(Pin.PIN_PULL_UP)
