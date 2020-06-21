@@ -27,13 +27,6 @@ class SRF05:
 
   def startCheckDistance(self):
     self._checkEchoProcessor = None
-    self._echoPinObj.addChangeListener(Pin.PIN_HIGH, self._getEchoHIGH)
+    self._echoPinObj.addChangeListener(Pin.PIN_PULL_UP, self._getEchoHIGH)
     self._startTriger = 1
     self._startTime = time.time()
-
-pi = RasiberryPiGPIO.RasiberryPiGPIO("3B+", "BCM")
-trigPin = pi.getPin(17)
-echoPin = pi.getPin(27)
-
-srf05 = SRF05(trigPin, echoPin)
-srf05.startCheckDistance()
