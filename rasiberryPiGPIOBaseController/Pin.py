@@ -40,7 +40,13 @@ class Pin:
     #if (self.pinNum > 0):
       # GPIO.setup(self.pin, GPIO.IN)
       # GPIO.setup(pinNum, GPIO.OUT, initial=GPIO.LOW)
-    
+  
+  def setupInput(self):
+    GPIO.setup(self.pin, GPIO.IN)
+
+  def setupOutput(self):
+    GPIO.setup(self.pin, GPIO.OUT)
+  
   def output_setup(self, hilow):
     if (self.pinNum > 0):
       # print (self.pin)
@@ -108,3 +114,6 @@ class Pin:
   def addChangeListener(self, updown, command):
     GPIO.setup(self.pin, GPIO.IN)
     GPIO.add_event_detect(self.pin, PIN_PULL[updown], command)
+  
+  def removeChangeListener(self):
+    GPIO.remove_event_detect(self.pin)
