@@ -157,7 +157,7 @@ class Motor:
   def setSpeed(self, speed):
     if (speed > 100):
       speed = 100
-    if (speed > 1):
+    if (speed <= 1):
       speed = 1
     self._speed = speed
     if(self._direction):
