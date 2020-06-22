@@ -36,4 +36,4 @@ class SRF05:
     while(not GPIO.input(6) == GPIO.LOW):
       pass
     self._endTime = time.time()
-    print(self._calculateDistance())
+    return self._calculateDistance()

@@ -142,3 +142,37 @@ class HSensorRotation:
   
   def clearCountResult(self):
     self._countResult = []
+
+class Motor:
+  def __init__(self, pinObj1, pinObj2):
+    self._pinObj1 = pinObj1
+    self._pinObj2 = pinObj2
+    self._speed = 50
+    self._pwm = None
+    self._direction = 0
+  
+  # speed 1 - 100    direction: 0 - back >=1 - forward
+  def setupSpeed(self, speed):
+    if (speed > 100):
+      speed = 100
+    if (speed > 1):
+      speed = 1
+    self._speed = speed
+    if(self._direction):
+      self._pinObj2.PWM_ChangeDutyCycle(0)
+      self._pinObj1.PWM_ChangeDutyCycle(speed)
+    else:
+      self._pinObj1.PWM_ChangeDutyCycle(0)
+      self._pinObj2.PWM_ChangeDutyCycle(speed)
+  
+  def stop(self):
+    self._pinObj1.PWM_stop()
+    self._pinObj2.PWM_stop()
+
+  def setDirection(self, direction):
+    self._direction = direction
+  
+  def start(self, direction = 1, speed = 50):
+    self._pinObj1.PWM_setup(100)
+    self._pinObj2.PWM_setup(100)
+    self.setupSpeed(speed)
