@@ -155,6 +155,10 @@ class Motor:
   
   # speed 1 - 100    direction: 0 - back >=1 - forward
   def setSpeed(self, speed):
+    if (speed == 0):
+      self._pinObj2.PWM_stop()
+      self._pinObj1.PWM_stop()
+      return
     if (speed > 100):
       speed = 100
     if (speed <= 1):
