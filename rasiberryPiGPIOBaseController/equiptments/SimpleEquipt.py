@@ -150,6 +150,8 @@ class Motor:
     self._speed = 50
     self._pwm = None
     self._direction = 0
+    self._pinObj1.PWM_setup(100)
+    self._pinObj2.PWM_setup(100)
   
   # speed 1 - 100    direction: 0 - back >=1 - forward
   def setSpeed(self, speed):
@@ -173,6 +175,4 @@ class Motor:
     self._direction = direction
   
   def start(self, direction = 1, speed = 50):
-    self._pinObj1.PWM_setup(100)
-    self._pinObj2.PWM_setup(100)
     self.setSpeed(speed)
