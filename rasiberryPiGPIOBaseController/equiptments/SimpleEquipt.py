@@ -175,4 +175,4 @@ class Motor:
   def start(self, direction = 1, speed = 50):
     self._pinObj1.PWM_setup(100)
     self._pinObj2.PWM_setup(100)
-    self.setupSpeed(speed)
+    self.setSpeed(speed)
