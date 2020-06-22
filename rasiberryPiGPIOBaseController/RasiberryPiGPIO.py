@@ -35,6 +35,7 @@ sampleGPIOStr = ''' +-----+-----+---------+------+---+---Pi 3---+---+------+----
 
 class RasiberryPiGPIO:
   def __init__(self, pitype, mode): # mode GPIO.BCM or GPIO.BOARD
+    GPIO.cleanup()
     if (mode == GPIO_TYPE_BCM):
       GPIO.setmode(GPIO.BCM)
     else:
