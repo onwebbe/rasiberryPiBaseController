@@ -77,7 +77,10 @@ class Pin:
       GPIO.setup(self.pin, GPIO.OUT) # PWM supporting output only
       self.pwm = GPIO.PWM(self.pin, frequency)
       self.pwm.start(0)
-  
+  def PWM_start(self, dc):
+    if (self.pwm is not None):
+      self.pwm.start(dc)
+      
   def PWM_ChangeFrequency(self, frequency):
     self.frequency = frequency
     if (self.pinNum > 0):

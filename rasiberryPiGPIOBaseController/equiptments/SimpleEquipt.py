@@ -159,11 +159,11 @@ class Motor:
       speed = 1
     self._speed = speed
     if(self._direction):
-      self._pinObj2.PWM_ChangeDutyCycle(0)
-      self._pinObj1.PWM_ChangeDutyCycle(speed)
+      self._pinObj2.PWM_start(0)
+      self._pinObj1.PWM_start(speed)
     else:
-      self._pinObj1.PWM_ChangeDutyCycle(0)
-      self._pinObj2.PWM_ChangeDutyCycle(speed)
+      self._pinObj1.PWM_start(0)
+      self._pinObj2.PWM_start(speed)
   
   def stop(self):
     self._pinObj1.PWM_stop()
