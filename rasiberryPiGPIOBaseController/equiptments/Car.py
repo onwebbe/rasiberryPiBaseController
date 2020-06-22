@@ -37,8 +37,8 @@ class CarMoveController:
     self._leftMotor.start(0)
 
   def setCarSpeed(self, speed):
-    if (speed <= 50):
-      speed = 50
+    if (speed <= 60):
+      speed = 60
     leftSpeed = speed
     rightSpeed = speed / self._balanceRatio
     self._leftMotor.setSpeed(leftSpeed)
@@ -54,7 +54,7 @@ class CarMoveController:
     self._rightMotor.setDirection(1)
     self.setCarSpeed(speed)
   
-  def rotate(self, direction, type = "normal", time = 1):
+  def rotate(self, direction, type = "normal", sleepTime = 1):
     self.noMove()
     speed = 50
     if (type == 'superfast'):
@@ -66,7 +66,7 @@ class CarMoveController:
       if (type == 'fast'):
         self._leftMotor.setDirection(1)
         self._leftMotor.setSpeed(speed)
-    time.sleep(time)
+    time.sleep(sleepTime)
     self.noMove()
 
   def noMove(self):
