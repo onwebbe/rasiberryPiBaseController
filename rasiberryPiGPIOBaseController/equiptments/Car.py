@@ -16,8 +16,8 @@ class CarAutoSonar:
         self._movingController.rotate('left')
       else:
         self._movingController.moveForward(50)
-      
       time.sleep(0.3)
+    self._movingController.stop()
 
   def startMove(self):
     self._isStart = True

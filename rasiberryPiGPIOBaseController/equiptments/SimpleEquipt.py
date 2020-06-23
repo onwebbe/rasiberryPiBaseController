@@ -144,14 +144,16 @@ class HSensorRotation:
     self._countResult = []
 
 class Motor:
+  SPEED_STEP = 10
+  FREQUENCY = 500
   def __init__(self, pinObj1, pinObj2):
     self._pinObj1 = pinObj1
     self._pinObj2 = pinObj2
     self._speed = 50
     self._pwm = None
     self._direction = 0
-    self._pinObj1.PWM_setup(100)
-    self._pinObj2.PWM_setup(100)
+    self._pinObj1.PWM_setup(Motor.FREQUENCY)
+    self._pinObj2.PWM_setup(Motor.FREQUENCY)
   
   # speed 1 - 100    direction: 0 - back >=1 - forward
   def setSpeed(self, speed):
@@ -180,3 +182,9 @@ class Motor:
   
   def start(self, direction = 1, speed = 50):
     self.setSpeed(speed)
+  
+  def speedUp(self):
+    self.setSpeed(self._speed + Motor.SPEED_STEP)
+
+  def speedDown(self):
+    self.setSpeed(self._speed - Motor.SPEED_STEP)
