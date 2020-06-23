@@ -13,7 +13,7 @@ class CarAutoSonar:
     while(self._isStart):
       distance = self._sonarDevice.getOneTimeDistance()
       if (distance < 30):
-        self._movingController.rotate('left')
+        self._movingController.rotate('left', 0.6)
       else:
         self._movingController.moveForward(50)
       time.sleep(0.1)
