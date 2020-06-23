@@ -3,7 +3,7 @@ from rasiberryPiGPIOBaseController.equiptments.Car import CarMoveController
 from rasiberryPiGPIOBaseController.equiptments.SimpleEquipt import Motor
 from rasiberryPiGPIOBaseController.equiptments.Distance import SRF05
 from rasiberryPiGPIOBaseController.RasiberryPiGPIO import RasiberryPiGPIO
-
+import time
 board = RasiberryPiGPIO('3B+', 'BCM')
 #left
 leftA = board.getPin(17)
@@ -25,3 +25,4 @@ carMotionController = CarMoveController(leftMotor, rightMotor, 6/5)
 
 autoCar = CarAutoSonar(carMotionController, sonar)
 autoCar.startMove()
+time.sleep(10)
