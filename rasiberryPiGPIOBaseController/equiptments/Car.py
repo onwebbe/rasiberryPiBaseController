@@ -29,7 +29,7 @@ class CarAutoSonar:
 
 class CarMoveController:
   #balanceRatio   speed of left / speed of right to make car go strictly
-  def __init__(self, leftMotor, rightMotor, balanceRatio = (5/6)):
+  def __init__(self, leftMotor, rightMotor, balanceRatio = (5/7)):
     self._leftMotor = leftMotor
     self._rightMotor = rightMotor
     self._balanceRatio = balanceRatio
