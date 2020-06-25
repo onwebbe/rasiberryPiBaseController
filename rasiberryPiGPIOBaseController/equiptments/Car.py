@@ -6,7 +6,7 @@ import time
 class CarAutoSonar:
   ROTATION_TIME = 0.3
   SONAR_CHECK_TIME_GAP = 0.1
-  CRASH_DISTANCE_LIMIT = 30
+  CRASH_DISTANCE_LIMIT = 40
   def __init__(self, movingController, sonarDevice):
     self._movingController = movingController
     self._sonarDevice = sonarDevice
@@ -31,7 +31,7 @@ class CarAutoSonar:
       if (distance < self._crash_distance_limit):
         self._movingController.rotate('left', self._rotation_time)
       else:
-        self._movingController.moveForward(50)
+        self._movingController.moveForward(0)
       time.sleep(self._sonar_check_time_gap)
     self._movingController.stop()
 
@@ -51,7 +51,7 @@ class CarMoveController:
     self._balanceRatio = balanceRatio
     self._rightMotor.start(0)
     self._leftMotor.start(0)
-    self._speed = 10
+    self._speed = 20
   
   def setBalanceRatio(self, ratio):
     self._balanceRatio = ratio
@@ -72,6 +72,8 @@ class CarMoveController:
     self.setCarSpeed(speed)
   
   def moveForward(self, speed):
+    if (speed == 0):
+      speed = self._speed
     self._leftMotor.setDirection(1)
     self._rightMotor.setDirection(1)
     self.setCarSpeed(speed)

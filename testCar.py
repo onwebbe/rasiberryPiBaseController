@@ -21,7 +21,7 @@ leftMotor = Motor(leftA, leftB)
 rightMotor = Motor(rightA, rightB)
 sonar = SRF05(trig, echo)
 
-carMotionController = CarMoveController(leftMotor, rightMotor, 5/7)
+carMotionController = CarMoveController(leftMotor, rightMotor, 10/9)
 
 autoCar = CarAutoSonar(carMotionController, sonar)
 autoCar.startMove()
