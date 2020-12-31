@@ -143,6 +143,69 @@ class HSensorRotation:
   def clearCountResult(self):
     self._countResult = []
 
+
+_HSensorRotationObjectV2
+class HSensorRotationV2:
+  def __init__(self, pinObj):
+    self._pinObj = pinObj
+    self._name = "HSensorV2"
+    self._sensorDataList = [] # list the time millium when the data read is 1
+    self._sensorDataMaxCount = 100
+  
+  @classmethod
+  def getInstance(cls, pinObj):
+    global _HSensorRotationObjectV2
+    if (_HSensorRotationObjectV2 is None):
+       _HSensorRotationObjectV2 = HSensorRotationV2(pinObj)
+    return _HSensorRotationObjectV2
+  
+  @classmethod
+  def getNewInstance(cls, pinObj):
+    global _HSensorRotationObjectV2
+    _HSensorRotationObjectV2 = HSensorRotationV2(pinObj)
+    return _HSensorRotationObjectV2
+  
+  def _addSensorData(self):
+    if (len(self._sensorDataList) >= self._sensorDataMaxCount):
+      del self._sensorDataList[0]
+    currentTime = time.time_ns() / (10 ** 3) # 毫秒级
+    self._sensorDataList.append(currentTime)
+
+  def getStatus(self):
+    return self._pinObj.read(Pin.PIN_PULL_UP)
+  
+  def addChangeListener(self, command):
+    self._pinObj.addChangeListener(Pin.PIN_PULL_RAISING, command)
+  
+  def startCount(self):
+    self.addChangeListener(self._addSensorData)
+  
+  def getSensorData(self):
+    return self._sensorDataList
+  
+  def getData(self, num):
+    size = len(self._sensorDataList)
+    if ( size >= 2 ):
+      afterTime = self._sensorDataList[size - num]
+      beforeTime = self._sensorDataList[size - num - 1]
+      gap = afterTime - beforeTime # 毫秒
+      roundInMinuts = 60 * 1000 / gap
+      return roundInMinuts
+    else:
+      return -1
+  
+  def getLastData(self):
+    return self.getData(1)
+  
+  def getAvgData(self, count):
+    totalRoungNumber = 0
+    for num in range(0, count):
+      totalRoungNumber += self.getData(num + 1)
+    if (totalRoungNumber == -1):
+      return -1
+    else:
+      return totalRoungNumber / count
+
 class Motor:
   SPEED_STEP = 10
   FREQUENCY = 500
