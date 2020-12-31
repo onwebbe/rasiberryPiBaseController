@@ -193,7 +193,7 @@ class HSensorRotationV2:
       afterTime = self._sensorDataList[size - num]
       beforeTime = self._sensorDataList[size - num - 1]
       gap = afterTime - beforeTime # 毫秒
-      roundInMinuts = 60 * 1000 / gap * self._countPerRound
+      roundInMinuts = 60 * 1000 / (gap * self._countPerRound)
       return roundInMinuts
     else:
       return -1
