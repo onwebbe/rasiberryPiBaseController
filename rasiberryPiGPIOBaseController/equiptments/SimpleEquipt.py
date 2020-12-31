@@ -144,7 +144,7 @@ class HSensorRotation:
     self._countResult = []
 
 
-_HSensorRotationObjectV2
+_HSensorRotationObjectV2 = None
 class HSensorRotationV2:
   def __init__(self, pinObj):
     self._pinObj = pinObj
@@ -177,9 +177,12 @@ class HSensorRotationV2:
   def addChangeListener(self, command):
     self._pinObj.addChangeListener(Pin.PIN_PULL_RAISING, command)
   
-  def startCount(self):
+  def _startCount(self):
     self.addChangeListener(self._addSensorData)
-  
+
+  def startCount(self):
+    _thread.start_new_thread(self._startCount, ())
+
   def getSensorData(self):
     return self._sensorDataList
   
