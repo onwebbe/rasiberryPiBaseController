@@ -165,7 +165,7 @@ class HSensorRotationV2:
     _HSensorRotationObjectV2 = HSensorRotationV2(pinObj)
     return _HSensorRotationObjectV2
   
-  def _addSensorData(self):
+  def _addSensorData(self, data):
     if (len(self._sensorDataList) >= self._sensorDataMaxCount):
       del self._sensorDataList[0]
     currentTime = time.time_ns() / (10 ** 3) # 毫秒级
