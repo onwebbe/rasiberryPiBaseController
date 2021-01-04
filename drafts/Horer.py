@@ -9,6 +9,6 @@ pin15.setupInput()
 
 
 sensor = SimpleEquipt.HSensorRotationV2.getInstance(pin15)
-sensor.startCount()
 time.sleep(10)
 print(sensor.getAvgData(3))
+print(sensor._sensorDataList)
