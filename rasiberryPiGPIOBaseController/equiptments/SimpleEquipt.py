@@ -183,7 +183,7 @@ class HSensorRotationV2:
     if (len(self._sensorDataList) == 0):
       return
     currentTime = time.time_ns() / (10 ** 6)
-    lastData = self._sensorDataList[len(self._sensorDataList) - 1]]
+    lastTime = self._sensorDataList[len(self._sensorDataList) - 1]
     # when there are no rotation in 1 second, add zero data
     if ((currentTime - lastTime) > 1000000):
       self._addSensorData(0)
