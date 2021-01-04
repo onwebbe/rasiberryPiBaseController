@@ -171,7 +171,10 @@ class HSensorRotationV2:
     if (len(self._sensorDataList) >= self._sensorDataMaxCount):
       del self._sensorDataList[0]
     currentTime = time.time_ns() / (10 ** 6) # 毫秒级
-    self._sensorDataList.append(currentTime)
+    if (data == 0):
+      self._sensorDataList.append(0)
+    else:
+      self._sensorDataList.append(currentTime)
 
   def getStatus(self):
     return self._pinObj.read(Pin.PIN_PULL_UP)
@@ -180,13 +183,14 @@ class HSensorRotationV2:
     self._pinObj.addChangeListener(Pin.PIN_PULL_RAISING, command)
   
   def addZero(self):
-    if (len(self._sensorDataList) == 0):
-      return
-    currentTime = time.time_ns() / (10 ** 6)
-    lastTime = self._sensorDataList[len(self._sensorDataList) - 1]
-    # when there are no rotation in 1 second, add zero data
-    if ((currentTime - lastTime) > 1000000):
-      self._addSensorData(0)
+    if (len(self._sensorDataList) > 0):
+      currentTime = time.time_ns() / (10 ** 6)
+      lastTime = self._sensorDataList[len(self._sensorDataList) - 1]
+      # when there are no rotation in 3 seconds, add zero data
+      if ((currentTime - lastTime) > 3000):
+        self._addSensorData(0)
+    time.sleep(2)
+    self.addZero()
 
   def _startCount(self):
     self.addChangeListener(self._addSensorData)
