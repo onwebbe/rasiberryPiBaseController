@@ -152,6 +152,7 @@ class HSensorRotationV2:
     self._sensorDataList = [] # list the time millium when the data read is 1
     self._sensorDataMaxCount = 100
     self._countPerRound = perRound
+    self.startCount()
   
   @classmethod
   def getInstance(cls, pinObj, countPerRound = 2):
