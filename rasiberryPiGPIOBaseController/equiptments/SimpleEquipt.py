@@ -179,11 +179,21 @@ class HSensorRotationV2:
   def addChangeListener(self, command):
     self._pinObj.addChangeListener(Pin.PIN_PULL_RAISING, command)
   
+  def addZero(self):
+    if (len(self._sensorDataList) == 0):
+      return
+    currentTime = time.time_ns() / (10 ** 6)
+    lastData = self._sensorDataList[len(self._sensorDataList) - 1])
+    # when there are no rotation in 1 second, add zero data
+    if ((currentTime - lastTime) > 1000000):
+      self._addSensorData(0)
+
   def _startCount(self):
     self.addChangeListener(self._addSensorData)
+    _thread.start_new_thread(self.addZero, ())
 
   def startCount(self):
-    _thread.start_new_thread(self._startCount, ())
+    self._startCount()
 
   def getSensorData(self):
     return self._sensorDataList
@@ -193,6 +203,9 @@ class HSensorRotationV2:
     if ( size >= 2 ):
       afterTime = self._sensorDataList[size - num]
       beforeTime = self._sensorDataList[size - num - 1]
+      # when there are no rotate time will be 0, so this data is skipped
+      if (afterTime == 0 or beforeTime == 0):
+        return -1
       gap = afterTime - beforeTime # 毫秒
       roundInMinuts = 60 * 1000 / (gap * self._countPerRound)
       return roundInMinuts
@@ -204,8 +217,10 @@ class HSensorRotationV2:
   
   def getAvgData(self, count):
     totalRoungNumber = 0
+    if (count == 0):
+      return -1
     for num in range(0, count):
-      totalRoungNumber += self.getData(num + 1)
+      totalRoungNumber += 0 if self.getData(num + 1) < 0 else self.getData(num + 1)
     if (totalRoungNumber == -1):
       return -1
     else:
