@@ -4,7 +4,7 @@ import rasiberryPiGPIOBaseController.RasiberryPiGPIO as RasiberryPiGPIO
 import rasiberryPiGPIOBaseController.Pin as Pin
 import time
 pi = RasiberryPiGPIO.RasiberryPiGPIO('3B+', 'BCM')
-pin15 = pi.getPinByBoardId(15)
+pin15 = pi.getPinByBoardId(11)
 pin15.setupInput()
 
 
