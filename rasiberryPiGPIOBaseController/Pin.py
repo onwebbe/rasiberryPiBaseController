@@ -120,3 +120,6 @@ class Pin:
   
   def removeChangeListener(self):
     GPIO.remove_event_detect(self.pin)
+  
+  def cleanup(self):
+    gpio.cleanup()
