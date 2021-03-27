@@ -30,16 +30,28 @@ class LCD1602WeatherDisplay:
     self.displayCharFromPositionForLine2(11, self._device.convertToHEXForChar(str(wind) + 'rpm'))
 
   def displayCharForLine1(self, *args):
-    self._device.displayChar(self, LCD1602.LCD_LINE_1, args)
+    finalCharList = []
+    for item in args:
+      finalCharList.extend(item)
+    self._device.displayChar(LCD1602.LCD_LINE_1, finalCharList)
 
   def displayCharForLine2(self, *args):
-    self._device.displayChar(self, LCD1602.LCD_LINE_2, args)
+    finalCharList = []
+    for item in args:
+      finalCharList.extend(item)
+    self._device.displayChar(LCD1602.LCD_LINE_2, finalCharList)
   
   def displayCharFromPositionForLine1(self, position, *args):
-    self._device.displayCharFromPosition(LCD1602.LCD_LINE_1, position, args)
+    finalCharList = []
+    for item in args:
+      finalCharList.extend(item)
+    self._device.displayCharFromPosition(LCD1602.LCD_LINE_1, position, finalCharList)
   
   def displayCharFromPositionForLine2(self, position, *args):
-    self._device.displayCharFromPosition(LCD1602.LCD_LINE_2, position, args)
+    finalCharList = []
+    for item in args:
+      finalCharList.extend(item)
+    self._device.displayCharFromPosition(LCD1602.LCD_LINE_2, position, finalCharList)
 
 # isInit = False
 # if len(sys.argv) == 1:
