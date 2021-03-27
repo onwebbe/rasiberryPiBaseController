@@ -101,9 +101,9 @@ class LCD1602:
   def lcd_toggle_enable(self):
     # Toggle enable
     time.sleep(E_DELAY)
-    self._enablePin.output_setup('PIN_HIGH')
+    self._enablePin.output_setup(Pin.PIN_HIGH)
     time.sleep(E_PULSE)
-    self._enablePin.output_setup('PIN_LOW')
+    self._enablePin.output_setup(Pin.PIN_LOW)
     time.sleep(E_DELAY)
 
   def convertToHEXForChar(self, charList):
@@ -129,7 +129,7 @@ class LCD1602:
     for argItem in args:
       concatedList.extend(argItem)
 
-    self.lcd_send_byte(line, LCD_CMD + (0x40 * position))
+    self.lcd_send_byte(line + (0x01 * position), LCD_CMD)
     i = 0
     for message in concatedList:
       if(i >= (16 - position)):
@@ -137,26 +137,24 @@ class LCD1602:
       self.lcd_send_byte(message, LCD_CHR)
 
   def createNewCharacterInOnce(self, bitsList):
+    # prepare character hex list
+    allHexList = []
+    i = 0
+    for key in bitsList:
+      oneCharacterHex = bitsList[key]
+      allHexList.extend(oneCharacterHex)
+      self._newCharacters[key] = i
+      i += 1
+
     # define start address for new character
     self.lcd_send_byte(LED_CMD_NEWCHAR, LCD_CMD)
     i = 0
-    for bits in bitsList:
+    for bits in allHexList:
       self.lcd_send_byte(bits, LCD_CHR)
-      self._newCharacters[str(i)] = i
       i += 1
-  
-  def createOneNewCharacter(self, name, position, bitsList):
-    # define start address for new character
-    self.lcd_send_byte(LED_CMD_NEWCHAR + (0x40 * position), LCD_CMD)
-    i = 0
-    for bits in bitsList:
-      if i < 8:
-        self.lcd_send_byte(bits, LCD_CHR)
-      i += 1
-    self._newCharacters[name] = position
   
   def getNewCharacter(self, name):
-    newCharHex = self._newCharacters[name]
+    newCharHex = 0x00 + self._newCharacters[name]
     if newCharHex is None:
       newCharHex = 0x00
     return newCharHex
@@ -164,14 +162,24 @@ class LCD1602:
   def simpleDemo(self):
     newCharacter1 = [0x04, 0x06, 0x04, 0x06, 0x04, 0x04, 0x0e, 0x0e]
     newCharacter2 = [0x04, 0x08, 0x0a, 0x12, 0x11, 0x11, 0x0a, 0x04]
-    self.createOneNewCharacter("temperature", 1, newCharacter1)
-    self.createOneNewCharacter("pressure", 1, newCharacter2)
-    self.displayChar(1, [self.getNewCharacter("temperature")], " simple demo")
-    self.displayChar(2, [self.getNewCharacter("pressure")], " for LCD1602")
+    allCharacters = {
+      "temperature": newCharacter1,
+      "pressure": newCharacter2
+    }
+    self.createNewCharacterInOnce(allCharacters)
+    self.displayChar(LCD_LINE_1, [self.getNewCharacter("temperature")], self.convertToHEXForChar(" simple demo"))
+    self.displayChar(LCD_LINE_2, [self.getNewCharacter("pressure")], self.convertToHEXForChar(" for LCD1602"))
+    time.sleep(3)
     while True:
-      self.displayCharFromPosition(1, 14, "10")
-      self.displayCharFromPosition(2, 13, "50%")
+      self.displayCharFromPosition(LCD_LINE_1, 10, self.convertToHEXForChar("10"))
+      self.displayCharFromPosition(LCD_LINE_2, 10, self.convertToHEXForChar("50%"))
       time.sleep(3)
-      self.displayCharFromPosition(1, 14, "25")
-      self.displayCharFromPosition(2, 13, "90%")
+      self.displayCharFromPosition(LCD_LINE_1, 10, self.convertToHEXForChar("25"))
+      self.displayCharFromPosition(LCD_LINE_2, 10, self.convertToHEXForChar("90%"))
+      time.sleep(3)
+      self.displayChar(LCD_LINE_1, self.convertToHEXForChar("simple demo end"))
+      self.displayChar(LCD_LINE_2, self.convertToHEXForChar("simple demo end"))
+      time.sleep(3)
+      self.displayChar(LCD_LINE_1, [self.getNewCharacter("temperature"), 0x02], self.convertToHEXForChar(" simple demo"))
+      self.displayChar(LCD_LINE_2, [self.getNewCharacter("pressure"), 0x03], self.convertToHEXForChar(" for LCD1602"))
       time.sleep(3)
