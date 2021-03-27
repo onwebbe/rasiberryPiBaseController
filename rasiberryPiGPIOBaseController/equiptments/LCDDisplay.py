@@ -63,9 +63,9 @@ rsPin = pi.getPin(23)
 ePin = pi.getPin(24)
 
 D4Pin = pi.getPin(25)
-D5Pin = pi.getPin(1)
-D6Pin = pi.getPin(12)
-D7Pin = pi.getPin(16)
+D5Pin = pi.getPin(12)
+D6Pin = pi.getPin(16)
+D7Pin = pi.getPin(20)
 
 bmp = BMP180.BMP180()
 
