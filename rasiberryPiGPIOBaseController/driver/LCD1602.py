@@ -1,6 +1,7 @@
 #!/usr/bin/python
 #import
 import RPi.GPIO as GPIO
+import rasiberryPiGPIOBaseController.Pin as Pin
 import time
  
 # Define GPIO to LCD mapping
@@ -13,8 +14,8 @@ LCD_D7 = 16
  
 # Define some device constants
 LCD_WIDTH = 16    # Maximum characters per line
-LCD_CHR = 'PIN_HIGH'
-LCD_CMD = 'PIN_LOW'
+LCD_CHR = Pin.PIN_HIGH
+LCD_CMD = Pin.PIN_LOW
  
 LCD_LINE_1 = 0x80 # LCD RAM address for the 1st line
 LCD_LINE_2 = 0xC0 # LCD RAM address for the 2nd line
@@ -62,36 +63,36 @@ class LCD1602:
     self._rsPin.output_setup(mode) # RS
   
     # High bits
-    self._D4Pin.output_setup("PIN_LOW")
-    self._D5Pin.output_setup("PIN_LOW")
-    self._D6Pin.output_setup("PIN_LOW")
-    self._D7Pin.output_setup("PIN_LOW")
+    self._D4Pin.output_setup(Pin.PIN_LOW)
+    self._D5Pin.output_setup(Pin.PIN_LOW)
+    self._D6Pin.output_setup(Pin.PIN_LOW)
+    self._D7Pin.output_setup(Pin.PIN_LOW)
 
     if bits&0x10==0x10:
-      self._D4Pin.output_setup("PIN_HIGH")
+      self._D4Pin.output_setup(Pin.PIN_HIGH)
     if bits&0x20==0x20:
-      self._D5Pin.output_setup("PIN_HIGH")
+      self._D5Pin.output_setup(Pin.PIN_HIGH)
     if bits&0x40==0x40:
-      self._D6Pin.output_setup("PIN_HIGH")
+      self._D6Pin.output_setup(Pin.PIN_HIGH)
     if bits&0x80==0x80:
-      self._D7Pin.output_setup("PIN_HIGH")
+      self._D7Pin.output_setup(Pin.PIN_HIGH)
   
     # Toggle 'Enable' pin
     self.lcd_toggle_enable()
   
     # Low bits
-    self._D4Pin.output_setup("PIN_LOW")
-    self._D5Pin.output_setup("PIN_LOW")
-    self._D6Pin.output_setup("PIN_LOW")
-    self._D7Pin.output_setup("PIN_LOW")
+    self._D4Pin.output_setup(Pin.PIN_LOW)
+    self._D5Pin.output_setup(Pin.PIN_LOW)
+    self._D6Pin.output_setup(Pin.PIN_LOW)
+    self._D7Pin.output_setup(Pin.PIN_LOW)
     if bits&0x01==0x01:
-      self._D4Pin.output_setup("PIN_HIGH")
+      self._D4Pin.output_setup(Pin.PIN_HIGH)
     if bits&0x02==0x02:
-      self._D5Pin.output_setup("PIN_HIGH")
+      self._D5Pin.output_setup(Pin.PIN_HIGH)
     if bits&0x04==0x04:
-      self._D6Pin.output_setup("PIN_HIGH")
+      self._D6Pin.output_setup(Pin.PIN_HIGH)
     if bits&0x08==0x08:
-      self._D7Pin.output_setup("PIN_HIGH")
+      self._D7Pin.output_setup(Pin.PIN_HIGH)
   
     # Toggle 'Enable' pin
     self.lcd_toggle_enable()
