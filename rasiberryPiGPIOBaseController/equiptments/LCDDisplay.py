@@ -13,21 +13,27 @@ class LCD1602WeatherDisplay:
     self._device = LCD1602.LCD1602(rsPin, enablePin, D4Pin, D5Pin, D6Pin, D7Pin)
     newCharacter1 = [0x04, 0x06, 0x04, 0x06, 0x04, 0x04, 0x0e, 0x0e]
     newCharacter2 = [0x04, 0x08, 0x0a, 0x12, 0x11, 0x11, 0x0a, 0x04]
+    newCharacter3 = [0x00, 0x11, 0x1f, 0x15, 0x04, 0x04, 0x0e, 0x0e]
+    newCharacter4 = [0x0e, 0x11, 0x15, 0x0e, 0x0e, 0x0e, 0x0e, 0x04]
+    newCharacter5 = [0x03, 0x03, 0x0c, 0x10, 0x10, 0x10, 0x10, 0x0c]
     allCharacters = {
       "temperature": newCharacter1,
-      "humidity": newCharacter2
+      "humidity": newCharacter2,
+      "wind": newCharacter3,
+      "light": newCharacter4,
+      "degree": newCharacter5
     }
     self._device.createNewCharacterInOnce(allCharacters)
-    self.displayCharForLine1([self._device.getNewCharacter('temperature')], self._device.convertToHEXForChar(" 0C    "),
-                              [self._device.getNewCharacter('humidity')], self._device.convertToHEXForChar(" 0%    "))
-    self.displayCharForLine2([self._device.getNewCharacter('temperature')], self._device.convertToHEXForChar(" 0l    "),
-                              [self._device.getNewCharacter('humidity')], self._device.convertToHEXForChar(" 0rpm  "))
+    self.displayCharForLine1([self._device.getNewCharacter('temperature')], self._device.convertToHEXForChar(" 0"), [self._device.getNewCharacter('degree')], self._device.convertToHEXForChar("    "),
+                              [self._device.getNewCharacter('humidity')], self._device.convertToHEXForChar(" 0%"))
+    self.displayCharForLine2([self._device.getNewCharacter('light')], self._device.convertToHEXForChar(" 0     "),
+                              [self._device.getNewCharacter('wind')], self._device.convertToHEXForChar(" 0rpm"))
   
   def displayWeather(self, temperature, humidity, light, wind):
-    self.displayCharFromPositionForLine1(3, self._device.convertToHEXForChar(str(temperature) + 'C'))
-    self.displayCharFromPositionForLine1(11, self._device.convertToHEXForChar(str(humidity) + '%'))
-    self.displayCharFromPositionForLine2(3, self._device.convertToHEXForChar(str(light) + 'l'))
-    self.displayCharFromPositionForLine2(11, self._device.convertToHEXForChar(str(wind) + 'rpm'))
+    self.displayCharFromPositionForLine1(2, 6, self._device.convertToHEXForChar(str(temperature)), [self._device.getNewCharacter('degree')])
+    self.displayCharFromPositionForLine1(10, 6, self._device.convertToHEXForChar(str(humidity) + '%'))
+    self.displayCharFromPositionForLine2(2, 6, self._device.convertToHEXForChar(str(light)))
+    self.displayCharFromPositionForLine2(10, 6, self._device.convertToHEXForChar(str(wind) + 'rpm'))
 
   def displayCharForLine1(self, *args):
     finalCharList = []
@@ -41,16 +47,20 @@ class LCD1602WeatherDisplay:
       finalCharList.extend(item)
     self._device.displayChar(LCD1602.LCD_LINE_2, finalCharList)
   
-  def displayCharFromPositionForLine1(self, position, *args):
+  def displayCharFromPositionForLine1(self, position, length, *args):
     finalCharList = []
     for item in args:
       finalCharList.extend(item)
+    for i in range(0, length - len(finalCharList)):
+      finalCharList.extend(self._device.convertToHEXForChar(' '))
     self._device.displayCharFromPosition(LCD1602.LCD_LINE_1, position, finalCharList)
   
-  def displayCharFromPositionForLine2(self, position, *args):
+  def displayCharFromPositionForLine2(self, position, length, *args):
     finalCharList = []
     for item in args:
       finalCharList.extend(item)
+    for i in range(0, length - len(finalCharList)):
+      finalCharList.extend(self._device.convertToHEXForChar(' '))
     self._device.displayCharFromPosition(LCD1602.LCD_LINE_2, position, finalCharList)
 
 # isInit = False
@@ -83,10 +93,10 @@ weatherDisplay = LCD1602WeatherDisplay(rsPin, ePin, D4Pin, D5Pin, D6Pin, D7Pin)
 
 while True:
   pressure = bmp.read_pressure()
-  light = round(gy.getLightData() * 10) / 10
+  light = round(gy.getLightData())
   dhtData = dht.getData()
   temperature = dhtData[0]
   humidity = dhtData[1]
   windSpeed = round(wind.getAvgData(5))
   weatherDisplay.displayWeather(temperature, humidity, light, windSpeed)
-  time.sleep(10)
+  time.sleep(3)
