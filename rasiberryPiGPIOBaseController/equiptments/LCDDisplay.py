@@ -83,10 +83,10 @@ weatherDisplay = LCD1602WeatherDisplay(rsPin, ePin, D4Pin, D5Pin, D6Pin, D7Pin)
 
 while True:
   pressure = bmp.read_pressure()
-  light = gy.getLightData()
+  light = round(gy.getLightData() * 10) / 10
   dhtData = dht.getData()
   temperature = dhtData[0]
   humidity = dhtData[1]
-  windSpeed = wind.getAvgData(5)
+  windSpeed = round(wind.getAvgData(5))
   weatherDisplay.displayWeather(temperature, humidity, light, windSpeed)
   time.sleep(10)
