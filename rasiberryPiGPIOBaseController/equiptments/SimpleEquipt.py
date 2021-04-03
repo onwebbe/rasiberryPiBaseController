@@ -211,8 +211,11 @@ class HSensorRotationV2:
       if (afterTime == 0 or beforeTime == 0):
         return -1
       gap = afterTime - beforeTime # 毫秒
-      roundInMinuts = 60 * 1000 / (gap * self._countPerRound)
-      return roundInMinuts
+      if ( gap ==0 ):
+        return -1
+      else:
+        roundInMinuts = 60 * 1000 / (gap * self._countPerRound)
+        return roundInMinuts
     else:
       return -1
   
