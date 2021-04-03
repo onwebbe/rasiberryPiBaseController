@@ -204,7 +204,7 @@ class HSensorRotationV2:
   
   def getData(self, num):
     size = len(self._sensorDataList)
-    if ( size >= (num - 1) ):
+    if ( size > (num - 1) ):
       afterTime = self._sensorDataList[size - num]
       beforeTime = self._sensorDataList[size - num - 1]
       # when there are no rotate time will be 0, so this data is skipped
