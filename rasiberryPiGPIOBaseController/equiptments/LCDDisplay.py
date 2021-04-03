@@ -99,4 +99,4 @@ while True:
   humidity = dhtData[1]
   windSpeed = round(wind.getAvgData(5))
   weatherDisplay.displayWeather(temperature, humidity, light, windSpeed)
-  time.sleep(3)
+  time.sleep(10)
